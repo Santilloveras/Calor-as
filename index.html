@@ -41,7 +41,7 @@ button{font:inherit;color:inherit;cursor:pointer}
 .dia .pill{margin-left:auto;width:auto;height:34px;padding:0 14px;border:1px solid var(--line);border-radius:999px;
   font-size:15px;background:var(--surface)}
 .total{display:flex;align-items:baseline;gap:10px;margin-top:2px;flex-wrap:wrap}
-#kcal{font-family:var(--display);font-size:clamp(52px,15vw,76px);font-weight:800;letter-spacing:-.03em;line-height:1}
+.big{font-family:var(--display);font-size:clamp(52px,15vw,76px);font-weight:800;letter-spacing:-.03em;line-height:1}
 .total .de{color:var(--muted)}
 #restan{margin-left:auto;font-weight:600}
 .barra{height:10px;background:var(--line);border-radius:5px;overflow:hidden;margin:10px 0 12px}
@@ -133,6 +133,48 @@ input[type=checkbox]{width:auto}
 .producto .vals{font-size:14px;margin:0 0 10px}
 .producto .calc{font-family:var(--display);font-size:28px;font-weight:800;margin:8px 0}
 .codigo{display:flex;gap:8px;margin-top:10px}
+/* Pestañas */
+.tabs{display:flex;gap:4px;padding:6px 16px 0;background:var(--bg);border-bottom:1px solid var(--line)}
+.tabs-in{max-width:640px;margin:0 auto;width:100%;display:flex;gap:4px}
+.tabs button{flex:1;background:none;border:0;padding:10px 4px 9px;font-weight:600;color:var(--muted);
+  border-bottom:2px solid transparent;margin-bottom:-1px}
+.tabs button[aria-selected=true]{color:var(--ink);border-bottom-color:var(--herb)}
+.vista{flex:1;min-height:0;display:flex;flex-direction:column}
+.vista[hidden]{display:none}
+.scroll{flex:1;overflow-y:auto;padding:16px 16px calc(28px + env(safe-area-inset-bottom,0px))}
+.cont{max-width:640px;margin:0 auto}
+.cont h3{font-size:16px;margin:26px 0 8px}
+.ayuda{margin:0 0 10px;font-size:14px;color:var(--muted)}
+.hero{display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.hero .de{color:var(--muted)}
+.hero .cambio{margin-left:auto;font-weight:600}
+.sub{margin:4px 0 0;color:var(--muted);font-size:14px}
+.carga{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:16px;align-items:end}
+.carga .btn{grid-column:1/-1;height:42px}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:999px;padding:3px;background:var(--surface);margin-top:18px}
+.seg button{background:none;border:0;border-radius:999px;padding:6px 14px;font-size:14px;color:var(--muted)}
+.seg button[aria-pressed=true]{background:var(--herb);color:var(--on-herb);font-weight:600}
+.graf{margin-top:12px;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:10px 8px 4px}
+.graf svg{display:block;width:100%;height:auto}
+.graf .vacio{padding:26px 8px}
+.fotos{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}
+.fotos button{padding:0;border:0;background:var(--surface);border-radius:10px;overflow:hidden;position:relative;aspect-ratio:3/4}
+.fotos img{width:100%;height:100%;object-fit:cover;display:block}
+.fotos span{position:absolute;left:6px;bottom:6px;background:rgba(0,0,0,.6);color:#fff;font-size:12px;padding:2px 6px;border-radius:6px}
+.comp{display:grid;grid-template-columns:1fr;gap:8px;margin:12px 0}
+.comp.dos{grid-template-columns:1fr 1fr}
+.comp figure{margin:0}
+.comp img{width:100%;border-radius:10px;display:block;max-height:65vh;object-fit:contain;background:#000}
+.comp figcaption{font-size:13px;color:var(--muted);margin-top:4px;text-align:center}
+.nota-box{background:var(--surface);border:1px solid var(--line);border-left:3px solid var(--herb);border-radius:10px;padding:10px 12px;margin-top:16px;font-size:14px}
+.nota-box b{font-family:var(--display);font-size:22px;display:block}
+.tabla-wrap{overflow-x:auto;margin-top:14px;border:1px solid var(--line);border-radius:12px;background:var(--surface)}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:460px}
+th,td{padding:8px 10px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-weight:600;color:var(--muted);font-size:13px}
+th:first-child,td:first-child{text-align:left}
+tr:last-child td{border-bottom:0}
+.sube{color:var(--fat)} .baja{color:var(--herb)}
 #toast{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);
   background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:12px;font-size:14px;max-width:90vw;
   opacity:0;pointer-events:none;transition:opacity .2s}
@@ -142,6 +184,15 @@ input[type=checkbox]{width:auto}
 </head>
 <body>
 
+<nav class="tabs" role="tablist">
+  <div class="tabs-in">
+    <button role="tab" data-vista="comidas" aria-selected="true">Comidas</button>
+    <button role="tab" data-vista="peso" aria-selected="false">Peso</button>
+    <button role="tab" data-vista="resumen" aria-selected="false">Resumen</button>
+  </div>
+</nav>
+
+<section class="vista" id="v-comidas">
 <header class="top">
   <div class="top-in">
     <div class="dia">
@@ -151,7 +202,7 @@ input[type=checkbox]{width:auto}
       <button id="abrirBase" class="pill">Base y ajustes</button>
     </div>
     <div class="total">
-      <span id="kcal" class="num">0</span>
+      <span id="kcal" class="big num">0</span>
       <span class="de">de <span id="meta" class="num">2.400</span> kcal</span>
       <span id="restan" class="num"></span>
     </div>
@@ -175,6 +226,54 @@ input[type=checkbox]{width:auto}
     <button id="enviar">Anotar</button>
   </div>
 </footer>
+</section>
+
+<section class="vista" id="v-peso" hidden>
+  <div class="scroll"><div class="cont">
+    <div class="hero">
+      <span class="big num" id="pesoGrande">-</span><span class="de">kg</span>
+      <span class="cambio num" id="pesoCambio"></span>
+    </div>
+    <p class="sub" id="pesoSub">Cargá tu primer peso para empezar.</p>
+
+    <div class="carga">
+      <label>Fecha<input type="date" id="pFecha"></label>
+      <label>Peso (kg)<input type="number" step="0.1" inputmode="decimal" id="pKg" placeholder="78,5"></label>
+      <button class="btn prim" id="pGuardar">Guardar peso</button>
+    </div>
+
+    <div class="seg" id="segPeso">
+      <button data-rango="30" aria-pressed="true">30 días</button>
+      <button data-rango="90" aria-pressed="false">90 días</button>
+      <button data-rango="0" aria-pressed="false">Todo</button>
+    </div>
+    <div class="graf" id="grafPeso"></div>
+    <p class="ayuda" style="margin-top:6px">Puntos: peso de cada día. Línea: promedio de 7 días, que es lo que conviene mirar.</p>
+
+    <h3>Fotos de progreso</h3>
+    <p class="ayuda">Se guardan con la fecha elegida arriba. Quedan solo en este celular, no se suben a GitHub.</p>
+    <button class="btn prim" id="subirFoto">Agregar foto</button>
+    <input type="file" id="fotoInput" accept="image/*" multiple hidden>
+    <div class="fotos" id="fotos"></div>
+
+    <h3>Registros de peso</h3>
+    <ul class="lista" id="listaPeso"></ul>
+  </div></div>
+</section>
+
+<section class="vista" id="v-resumen" hidden>
+  <div class="scroll"><div class="cont">
+    <div class="seg" id="segRes" style="margin-top:0">
+      <button data-per="sem" aria-pressed="true">Semanal</button>
+      <button data-per="mes" aria-pressed="false">Mensual</button>
+    </div>
+    <div id="mant"></div>
+    <h3>Calorías promedio por día</h3>
+    <div class="graf" id="grafKcal"></div>
+    <div class="tabla-wrap"><table id="tabla"></table></div>
+    <p class="ayuda" style="margin-top:8px">Los promedios de calorías y proteína usan solo los días con comidas anotadas. El cambio de peso compara contra el período anterior.</p>
+  </div></div>
+</section>
 
 <dialog id="panel">
   <div class="panel">
@@ -227,7 +326,7 @@ input[type=checkbox]{width:auto}
 
     <section>
       <h3>Copia de seguridad</h3>
-      <p class="ayuda">Todo se guarda en este navegador. Si borrás los datos del navegador o cambiás de celu, se pierde: exportá una copia cada tanto.</p>
+      <p class="ayuda">Todo se guarda en este navegador. Si borrás los datos del navegador o cambiás de celu, se pierde: exportá una copia cada tanto. La copia incluye comidas, pesos y fotos.</p>
       <div class="acciones">
         <button class="btn" id="exportar">Exportar copia</button>
         <button class="btn" id="importarCopia">Restaurar copia</button>
@@ -250,6 +349,18 @@ input[type=checkbox]{width:auto}
       <button class="btn" id="buscarCodigo">Buscar</button>
     </div>
     <div id="resultado"></div>
+  </div>
+</dialog>
+
+<dialog id="visor">
+  <div class="panel">
+    <div class="panel-top">
+      <h2 id="vFecha"></h2>
+      <button class="btn" id="cerrarVisor">Cerrar</button>
+    </div>
+    <div class="comp" id="vImgs"></div>
+    <label>Comparar con<select id="vComp"></select></label>
+    <div class="acciones" style="margin-top:12px"><button class="btn" id="vBorrar">Borrar esta foto</button></div>
   </div>
 </dialog>
 
@@ -504,8 +615,13 @@ $('#lista').addEventListener('click', ev => {
   store.set('cc_propios', propios); indexar(propios); renderLista();
 });
 
-$('#exportar').addEventListener('click', () => {
-  const blob = new Blob([JSON.stringify({ version: 1, propios, registros, cfg }, null, 2)], { type: 'application/json' });
+const blobADataUrl = blob => new Promise((res, rej) => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = rej; r.readAsDataURL(blob); });
+
+$('#exportar').addEventListener('click', async () => {
+  let fotos = [];
+  try { fotos = await Promise.all((await idb.all()).map(async f => ({ id: f.id, fecha: f.fecha, img: await blobADataUrl(f.blob) }))); }
+  catch (e) { toast('No pude leer las fotos, exporto el resto'); }
+  const blob = new Blob([JSON.stringify({ version: 2, propios, registros, cfg, pesos, fotos })], { type: 'application/json' });
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob); a.download = `contador-copia-${isoDia(new Date())}.json`;
   document.body.appendChild(a); a.click(); a.remove();
@@ -515,16 +631,22 @@ $('#importarCopia').addEventListener('click', () => $('#archivo').click());
 $('#archivo').addEventListener('change', ev => {
   const file = ev.target.files[0]; if (!file) return;
   const r = new FileReader();
-  r.onload = () => {
-    try {
-      const d = JSON.parse(r.result);
-      if (!confirm('Esto reemplaza tus datos actuales por los de la copia. ¿Seguir?')) return;
-      propios = (d.propios || []).map(limpiarAlimento).filter(Boolean);
-      registros = d.registros || {};
-      cfg = Object.assign(cfg, d.cfg || {});
-      store.set('cc_propios', propios); store.set('cc_registros', registros); store.set('cc_cfg', cfg);
-      indexar(propios); renderLista(); render(); toast('Copia restaurada');
-    } catch (e) { toast('El archivo no es una copia válida'); }
+  r.onload = async () => {
+    let d;
+    try { d = JSON.parse(r.result); } catch (e) { toast('El archivo no es una copia válida'); return; }
+    if (!confirm('Esto reemplaza tus datos actuales por los de la copia. ¿Seguir?')) return;
+    propios = (d.propios || []).map(limpiarAlimento).filter(Boolean);
+    registros = d.registros || {};
+    cfg = Object.assign(cfg, d.cfg || {});
+    pesos = d.pesos || {};
+    store.set('cc_propios', propios); store.set('cc_registros', registros); store.set('cc_cfg', cfg); store.set('cc_pesos', pesos);
+    if (Array.isArray(d.fotos)) {
+      try {
+        await idb.clear();
+        for (const f of d.fotos) await idb.put({ id: f.id, fecha: f.fecha, blob: await (await fetch(f.img)).blob() });
+      } catch (e) { toast('No pude restaurar las fotos'); }
+    }
+    indexar(propios); renderLista(); render(); toast('Copia restaurada');
   };
   r.readAsText(file); ev.target.value = '';
 });
@@ -648,6 +770,276 @@ $('#buscarCodigo').addEventListener('click', async () => { await pararCamara(); 
 $('#codigoManual').addEventListener('keydown', async ev => { if (ev.key === 'Enter') { await pararCamara(); buscarCodigo($('#codigoManual').value); } });
 $('#cerrarScan').addEventListener('click', () => $('#scan').close());
 $('#scan').addEventListener('close', pararCamara);
+
+// ===== Pestañas =====
+let vista = 'comidas';
+document.querySelectorAll('.tabs button').forEach(b => b.addEventListener('click', () => {
+  vista = b.dataset.vista;
+  document.querySelectorAll('.tabs button').forEach(x => x.setAttribute('aria-selected', x === b));
+  ['comidas', 'peso', 'resumen'].forEach(v => { $('#v-' + v).hidden = v !== vista; });
+  if (vista === 'comidas') render();
+  if (vista === 'peso') renderPeso();
+  if (vista === 'resumen') renderResumen();
+}));
+
+// ===== Utilidades de fechas =====
+const sumarDias = (iso, n) => { const d = new Date(iso + 'T12:00'); d.setDate(d.getDate() + n); return isoDia(d); };
+const difDias = (a, b) => Math.round((new Date(b + 'T12:00') - new Date(a + 'T12:00')) / 864e5);
+const fechaCorta = iso => new Date(iso + 'T12:00').toLocaleDateString('es-AR', { day: 'numeric', month: 'short' });
+const kg = n => n.toLocaleString('es-AR', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
+const kcalDia = d => (registros[d] || []).length ? totales(registros[d].flatMap(e => e.items)) : null;
+
+// ===== Fotos en IndexedDB (no entran en localStorage) =====
+const idb = (() => {
+  let dbp;
+  const abrir = () => dbp || (dbp = new Promise((res, rej) => {
+    const r = indexedDB.open('contador', 1);
+    r.onupgradeneeded = () => r.result.createObjectStore('fotos', { keyPath: 'id' });
+    r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error);
+  }));
+  const tx = async (modo, fn) => {
+    const db = await abrir();
+    return new Promise((res, rej) => {
+      const t = db.transaction('fotos', modo); const req = fn(t.objectStore('fotos'));
+      t.oncomplete = () => res(req && req.result); t.onerror = () => rej(t.error);
+    });
+  };
+  return { put: f => tx('readwrite', s => s.put(f)), del: id => tx('readwrite', s => s.delete(id)),
+    all: () => tx('readonly', s => s.getAll()), clear: () => tx('readwrite', s => s.clear()) };
+})();
+
+async function comprimir(file) {
+  const url = URL.createObjectURL(file);
+  try {
+    const img = new Image(); img.src = url; await img.decode();
+    const max = 1280, k = Math.min(1, max / Math.max(img.naturalWidth, img.naturalHeight));
+    const c = document.createElement('canvas');
+    c.width = Math.round(img.naturalWidth * k); c.height = Math.round(img.naturalHeight * k);
+    c.getContext('2d').drawImage(img, 0, 0, c.width, c.height);
+    return await new Promise(r => c.toBlob(r, 'image/jpeg', 0.82));
+  } finally { URL.revokeObjectURL(url); }
+}
+
+// ===== Peso =====
+let pesos = store.get('cc_pesos', {});
+let rangoPeso = 30;
+let urlsFotos = [];
+let fotosCache = [];
+$('#pFecha').value = isoDia(new Date());
+$('#pFecha').max = isoDia(new Date());
+
+function prom7(fechas, hasta) {
+  const v = fechas.filter(f => f <= hasta && difDias(f, hasta) < 7).map(f => pesos[f]);
+  return v.length ? v.reduce((a, b) => a + b, 0) / v.length : null;
+}
+
+function renderPeso() {
+  const fechas = Object.keys(pesos).sort();
+  if (fechas.length) {
+    const ult = fechas[fechas.length - 1];
+    $('#pesoGrande').textContent = kg(pesos[ult]);
+    const pHoy = prom7(fechas, ult);
+    const pAnt = prom7(fechas, sumarDias(ult, -7));
+    $('#pesoSub').textContent = `Último registro: ${etiquetaDia(ult).toLowerCase()}. Promedio de 7 días: ${kg(pHoy)} kg.`;
+    if (pAnt != null && fechas[0] <= sumarDias(ult, -7)) {
+      const d = pHoy - pAnt;
+      $('#pesoCambio').textContent = `${d > 0 ? '+' : ''}${kg(d)} kg vs semana anterior`;
+      $('#pesoCambio').className = 'cambio num';
+    } else $('#pesoCambio').textContent = '';
+  } else {
+    $('#pesoGrande').textContent = '-'; $('#pesoCambio').textContent = '';
+    $('#pesoSub').textContent = 'Cargá tu primer peso para empezar.';
+  }
+  const f = $('#pFecha').value;
+  if (pesos[f] != null && document.activeElement !== $('#pKg')) $('#pKg').value = pesos[f];
+
+  graficoPeso(fechas);
+  $('#listaPeso').innerHTML = fechas.slice().reverse().slice(0, 60).map(d => `<li>
+    <span class="ln">${esc(etiquetaDia(d))}</span><span class="q num">${kg(pesos[d])} kg</span>
+    <button data-borrarpeso="${d}">Borrar</button></li>`).join('') || '<li>Todavía no hay registros</li>';
+  renderFotos();
+}
+
+function graficoPeso(fechas) {
+  const hoy = isoDia(new Date());
+  const desde = rangoPeso ? sumarDias(hoy, -(rangoPeso - 1)) : (fechas[0] || hoy);
+  const vis = fechas.filter(d => d >= desde);
+  if (vis.length < 2) { $('#grafPeso').innerHTML = '<p class="vacio">Con dos o más registros aparece el gráfico.</p>'; return; }
+  const W = 340, H = 170, L = 36, R = 8, T = 10, B = 22;
+  const total = Math.max(1, difDias(desde, hoy));
+  const vals = vis.map(d => pesos[d]);
+  const lo = Math.floor(Math.min(...vals) - 0.5), hi = Math.ceil(Math.max(...vals) + 0.5);
+  const x = d => L + (W - L - R) * difDias(desde, d) / total;
+  const y = v => T + (H - T - B) * (1 - (v - lo) / (hi - lo));
+  const puntos = vis.map(d => `<circle cx="${x(d).toFixed(1)}" cy="${y(pesos[d]).toFixed(1)}" r="2.6" fill="var(--muted)" opacity=".55"/>`).join('');
+  const linea = vis.map((d, i) => `${i ? 'L' : 'M'}${x(d).toFixed(1)},${y(prom7(fechas, d)).toFixed(1)}`).join(' ');
+  const grid = [lo, (lo + hi) / 2, hi].map(v => `<line x1="${L}" x2="${W - R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--line)"/>
+    <text x="${L - 6}" y="${y(v) + 4}" text-anchor="end" font-size="10" fill="var(--muted)">${kg(v)}</text>`).join('');
+  $('#grafPeso').innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Gráfico de peso">${grid}
+    <path d="${linea}" fill="none" stroke="var(--herb)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>${puntos}
+    <text x="${L}" y="${H - 6}" font-size="10" fill="var(--muted)">${fechaCorta(desde)}</text>
+    <text x="${W - R}" y="${H - 6}" font-size="10" fill="var(--muted)" text-anchor="end">${fechaCorta(hoy)}</text></svg>`;
+}
+
+$('#pGuardar').addEventListener('click', () => {
+  const v = aNum($('#pKg').value), f = $('#pFecha').value;
+  if (!f || !(v > 20 && v < 400)) { toast('Revisá la fecha y el peso'); return; }
+  pesos[f] = Math.round(v * 10) / 10; store.set('cc_pesos', pesos);
+  $('#pKg').value = ''; renderPeso(); toast(`Guardado: ${kg(pesos[f])} kg`);
+});
+$('#pKg').addEventListener('keydown', ev => { if (ev.key === 'Enter') $('#pGuardar').click(); });
+$('#pFecha').addEventListener('change', () => { $('#pKg').value = pesos[$('#pFecha').value] ?? ''; });
+$('#segPeso').addEventListener('click', ev => {
+  const b = ev.target.closest('button'); if (!b) return;
+  rangoPeso = +b.dataset.rango;
+  $('#segPeso').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  graficoPeso(Object.keys(pesos).sort());
+});
+$('#listaPeso').addEventListener('click', ev => {
+  const b = ev.target.closest('[data-borrarpeso]'); if (!b) return;
+  if (!confirm('¿Borrar este peso?')) return;
+  delete pesos[b.dataset.borrarpeso]; store.set('cc_pesos', pesos); renderPeso();
+});
+
+// ===== Fotos =====
+async function renderFotos() {
+  urlsFotos.forEach(u => URL.revokeObjectURL(u)); urlsFotos = [];
+  try { fotosCache = (await idb.all()).sort((a, b) => b.fecha.localeCompare(a.fecha) || b.id.localeCompare(a.id)); }
+  catch (e) { $('#fotos').innerHTML = '<p class="ayuda">Este navegador no permite guardar fotos.</p>'; return; }
+  $('#fotos').innerHTML = fotosCache.map(f => {
+    const u = URL.createObjectURL(f.blob); urlsFotos.push(u);
+    return `<button data-foto="${f.id}" aria-label="Foto del ${fechaCorta(f.fecha)}"><img src="${u}" alt=""><span>${fechaCorta(f.fecha)}</span></button>`;
+  }).join('');
+}
+
+$('#subirFoto').addEventListener('click', () => $('#fotoInput').click());
+$('#fotoInput').addEventListener('change', async ev => {
+  const files = [...ev.target.files]; ev.target.value = '';
+  if (!files.length) return;
+  const fecha = $('#pFecha').value || isoDia(new Date());
+  toast('Guardando...');
+  try {
+    for (const file of files) await idb.put({ id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), fecha, blob: await comprimir(file) });
+    toast(files.length > 1 ? `${files.length} fotos guardadas` : 'Foto guardada');
+  } catch (e) { toast('No pude guardar la foto'); }
+  renderFotos();
+});
+
+let fotoAbierta = null;
+function mostrarVisor() {
+  const f = fotosCache.find(x => x.id === fotoAbierta); if (!f) return;
+  const otra = fotosCache.find(x => x.id === $('#vComp').value);
+  const fig = x => `<figure><img src="${urlsFotos[fotosCache.indexOf(x)]}" alt="Foto del ${fechaCorta(x.fecha)}"><figcaption>${fechaCorta(x.fecha)}</figcaption></figure>`;
+  $('#vFecha').textContent = new Date(f.fecha + 'T12:00').toLocaleDateString('es-AR', { day: 'numeric', month: 'long', year: 'numeric' });
+  $('#vImgs').className = 'comp' + (otra ? ' dos' : '');
+  $('#vImgs').innerHTML = otra ? (otra.fecha <= f.fecha ? fig(otra) + fig(f) : fig(f) + fig(otra)) : fig(f);
+}
+$('#fotos').addEventListener('click', ev => {
+  const b = ev.target.closest('[data-foto]'); if (!b) return;
+  fotoAbierta = b.dataset.foto;
+  const primera = fotosCache[fotosCache.length - 1];
+  $('#vComp').innerHTML = '<option value="">Nada</option>' + fotosCache.filter(x => x.id !== fotoAbierta)
+    .map(x => `<option value="${x.id}">${fechaCorta(x.fecha)}${x === primera ? ' (la primera)' : ''}</option>`).join('');
+  mostrarVisor(); $('#visor').showModal();
+});
+$('#vComp').addEventListener('change', mostrarVisor);
+$('#cerrarVisor').addEventListener('click', () => $('#visor').close());
+$('#vBorrar').addEventListener('click', async () => {
+  if (!confirm('¿Borrar esta foto?')) return;
+  await idb.del(fotoAbierta); $('#visor').close(); renderFotos();
+});
+
+// ===== Resumen =====
+let periodo = 'sem';
+
+function periodos(tipo) {
+  const hoy = isoDia(new Date()), out = [];
+  if (tipo === 'sem') {
+    const d = new Date(hoy + 'T12:00'); d.setDate(d.getDate() - (d.getDay() + 6) % 7);
+    let ini = isoDia(d);
+    for (let i = 0; i < 8; i++) {
+      out.push({ ini, fin: sumarDias(ini, 6), label: i === 0 ? 'Esta semana' : `Sem. ${fechaCorta(ini)}`, corto: fechaCorta(ini) });
+      ini = sumarDias(ini, -7);
+    }
+  } else {
+    const d = new Date(hoy + 'T12:00'); d.setDate(1);
+    for (let i = 0; i < 6; i++) {
+      const ini = isoDia(d); const f = new Date(d); f.setMonth(f.getMonth() + 1); f.setDate(0);
+      const mes = d.toLocaleDateString('es-AR', { month: 'long' });
+      out.push({ ini, fin: isoDia(f), label: i === 0 ? `${mes} (en curso)` : mes, corto: d.toLocaleDateString('es-AR', { month: 'short' }) });
+      d.setMonth(d.getMonth() - 1);
+    }
+  }
+  return out.reverse();
+}
+
+function datosPeriodo(p) {
+  const dias = Object.keys(registros).filter(d => d >= p.ini && d <= p.fin && registros[d].length);
+  const tots = dias.map(kcalDia);
+  const ps = Object.keys(pesos).filter(d => d >= p.ini && d <= p.fin).map(d => pesos[d]);
+  const avg = a => a.length ? a.reduce((x, y) => x + y, 0) / a.length : null;
+  return { ...p, dias: dias.length, kcal: avg(tots.map(t => t.kcal)), prot: avg(tots.map(t => t.p)), peso: avg(ps) };
+}
+
+function mantenimiento() {
+  const hoy = isoDia(new Date()), desde = sumarDias(hoy, -27);
+  const dias = Object.keys(registros).filter(d => d >= desde && registros[d].length);
+  const ps = Object.keys(pesos).filter(d => d >= desde).sort();
+  if (dias.length < 14 || ps.length < 6 || difDias(ps[0], ps[ps.length - 1]) < 14) {
+    return `<div class="nota-box">Con 2 semanas de comidas y pesos anotados (6 pesos o más) te calculo tus calorías de mantenimiento reales. Hoy tenés ${dias.length} días de comidas y ${ps.length} pesos en las últimas 4 semanas.</div>`;
+  }
+  const kcal = dias.reduce((a, d) => a + kcalDia(d).kcal, 0) / dias.length;
+  const xs = ps.map(d => difDias(desde, d)), ys = ps.map(d => pesos[d]);
+  const mx = xs.reduce((a, b) => a + b) / xs.length, my = ys.reduce((a, b) => a + b) / ys.length;
+  const pend = xs.reduce((a, x, i) => a + (x - mx) * (ys[i] - my), 0) / xs.reduce((a, x) => a + (x - mx) ** 2, 0);
+  const mant = kcal - pend * 7700;
+  const sem = pend * 7;
+  return `<div class="nota-box">Mantenimiento estimado (últimas 4 semanas)<b class="num">≈ ${fmt(Math.round(mant / 10) * 10)} kcal</b>
+    Comiste ${fmt(kcal)} kcal por día en promedio y tu peso va ${sem >= 0 ? 'subiendo' : 'bajando'} ${kg(Math.abs(sem))} kg por semana.
+    Es tan preciso como lo que anotás: si hay días o comidas sin cargar, lo subestima.</div>`;
+}
+
+function renderResumen() {
+  const datos = periodos(periodo).map(datosPeriodo);
+  $('#mant').innerHTML = mantenimiento();
+
+  // Gráfico de barras de kcal promedio con línea de objetivo
+  const W = 340, H = 170, L = 36, R = 8, T = 10, B = 22;
+  const maxV = Math.max(cfg.kcal * 1.15, ...datos.map(d => d.kcal || 0));
+  const y = v => T + (H - T - B) * (1 - v / maxV);
+  const ancho = (W - L - R) / datos.length;
+  const barras = datos.map((d, i) => {
+    const cx = L + ancho * i + ancho / 2;
+    const bar = d.kcal ? `<rect x="${cx - ancho * 0.32}" y="${y(d.kcal)}" width="${ancho * 0.64}" height="${H - B - y(d.kcal)}" rx="3" fill="${d.kcal > cfg.kcal ? 'var(--fat)' : 'var(--herb)'}"/>` : '';
+    return `${bar}<text x="${cx}" y="${H - 7}" font-size="9.5" text-anchor="middle" fill="var(--muted)">${esc(d.corto)}</text>`;
+  }).join('');
+  const meta = `<line x1="${L}" x2="${W - R}" y1="${y(cfg.kcal)}" y2="${y(cfg.kcal)}" stroke="var(--ink)" stroke-dasharray="4 4" opacity=".6"/>
+    <text x="${L - 6}" y="${y(cfg.kcal) + 4}" font-size="10" text-anchor="end" fill="var(--muted)">${fmt(cfg.kcal)}</text>`;
+  $('#grafKcal').innerHTML = datos.some(d => d.kcal)
+    ? `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Calorías promedio por período">${barras}${meta}</svg>`
+    : '<p class="vacio">Cuando anotes comidas aparecen los promedios.</p>';
+
+  // Tabla (más reciente arriba)
+  const filas = datos.map((d, i) => {
+    const ant = datos[i - 1];
+    const cambio = d.peso != null && ant && ant.peso != null ? d.peso - ant.peso : null;
+    const cls = '';
+    return `<tr><td>${esc(d.label)}</td>
+      <td class="num">${d.kcal ? fmt(d.kcal) : '-'}</td>
+      <td class="num">${d.dias || '-'}</td>
+      <td class="num">${d.prot ? fmt(d.prot) + ' g' : '-'}</td>
+      <td class="num">${d.peso != null ? kg(d.peso) + ' kg' : '-'}</td>
+      <td class="num ${cls}">${cambio != null ? (cambio > 0 ? '+' : '') + kg(cambio) : '-'}</td></tr>`;
+  }).reverse().join('');
+  $('#tabla').innerHTML = `<thead><tr><th>Período</th><th>kcal/día</th><th>Días</th><th>Proteína</th><th>Peso prom.</th><th>Cambio</th></tr></thead><tbody>${filas}</tbody>`;
+}
+
+$('#segRes').addEventListener('click', ev => {
+  const b = ev.target.closest('button'); if (!b) return;
+  periodo = b.dataset.per;
+  $('#segRes').querySelectorAll('button').forEach(x => x.setAttribute('aria-pressed', x === b));
+  renderResumen();
+});
 
 render();
 </script>
